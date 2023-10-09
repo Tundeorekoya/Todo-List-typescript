@@ -23,8 +23,22 @@ class FullList implements List {
 
         return this._list
     }
+    load(): void {
+        const storedList : string | null = localStorage.getItem("mylist")
+        if (typeof storedList !== "string") return
+
+      const parsedList : {_id: string , _item: string, _checked: boolean}[] = JSON.parse(storedList)
+
+      parsedList.forEach(ItemObj => {
+        const newListItem = new ListItem(ItemObj._id, ItemObj._item, ItemObj._checked )
+
+        FullList.instance.addItem(newListItem)
+      })
+
+      
+    }
     save(): void{
-        localStorage.setItem("myList", JSON.stringify(this._list))
+        localStorage.setItem( "myList", JSON.stringify(this._list))
     }
     clearList(): void {
         this._list = []
